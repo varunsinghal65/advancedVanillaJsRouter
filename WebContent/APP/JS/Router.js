@@ -14,16 +14,16 @@ var Route = function(url, templateUrl){
  */
 var router = {
     routes : [],
-    tplCache : [],
+    tplCache : {},
     isCacheEnabled : false,
     tplBaseDirectory  : "",
-    tplJqueryDomContainerId : ""
+    tplDomContainerId : ""
 };
 
-router.init = function (tplBaseDirectory, enableTplCache, tplJqueryDomContainerId) {
+router.init = function (tplBaseDirectory, enableTplCache, tplDomContainerId) {
     this.tplBaseDirectory = tplBaseDirectory;
     this.isCacheEnabled = enableTplCache;
-    this.tplJqueryDomContainerId = tplJqueryDomContainerId;
+    this.tplDomContainerId = tplDomContainerId;
 };
 
 /**
@@ -51,14 +51,16 @@ router.route = function() {
     var requestedRouteUrl = window.location.href.split("#")[1];
     //retrieve the stored route object corresponding to URL
     var requestedRouteObj = this._findRoute(requestedRouteUrl);
+    var tpl = "";
     if (requestedRouteObj) {
         //retrieve the tpl
-        var tpl = this._retrieveTpl(requestedRouteObj.tplUrl);
-        // replace the view with tpl contents
-        $(this.tplJqueryDomContainerId).innerHTML = tpl;
+        tpl = this._retrieveTpl(requestedRouteObj.tplUrl);
     } else {
+        tpl = "Requested route not added to list of routes";
         console.warn("Route not found");
     }
+    // replace the view with tpl contents
+    document.getElementById(this.tplDomContainerId).innerHTML = tpl;
 };
 
 router.addRoute = function(route) {
@@ -78,7 +80,7 @@ router._retrieveTpl = function(tplUrl) {
     } else {
         tpl = this._retrieveTplFromServer(tplUrl);
         if (this.isCacheEnabled) {
-            this.tplCache.push({tplUrl : tpl});
+            this.tplCache[tplUrl] = tpl;
         }
     }
     return tpl;
@@ -98,7 +100,7 @@ router._retrieveTplFromServer = function(tplUrl) {
 
 router.flushTplAndRoutes = function() {
     this.routes = [];
-    this.tplCache = [];
+    this.tplCache = {};
 };
 
 /**

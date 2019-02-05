@@ -10,7 +10,7 @@
 <script type="text/javascript" src="JS/Router.js"></script>
 <script>
 //initialize the router
-router.init("HTML/", true, "tplContainer");
+router.init("", true, "tplContainer");
 //add the routes here
 router.addRoute(new Route("route1",'route1.html'));
 router.addRoute(new Route("route2",'route2.html'));
@@ -19,12 +19,12 @@ router.addRoute(new Route("route4"));
 </script>
 </head>
 <body>
-	<ul>
-		<li><a href="#route1">Go to route1</a></li>
-		<li><a href="#route2">Go to route2</a></li>
-		<li><a href="#route3">Go to route3</a></li>
-		<li><a href="#route4">Go to route4</a></li>
-	</ul>
+        <ul>
+            <li><a href="#route1">Go to route1</a></li>
+            <li><a href="#route2">Go to route2</a></li>
+            <li><a href="#route3">Go to route3</a></li>
+            <li><a href="#route4">Go to route4</a></li>
+        </ul>
     <!--Container within which router renders the template -->
     <div id="tplContainer">
     </div>
