@@ -1,3 +1,7 @@
 ## webstorm IDE ##
 src/main/webapp/.idea/
 .idea/
+
+## eclipse IDE ##
+.project
+.settings/

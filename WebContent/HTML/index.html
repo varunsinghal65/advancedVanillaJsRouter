@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Index</title>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script type="text/javascript" src="JS/Router.js"></script>
+<script>
+//initialize the router
+router.init("HTML/", true, "tplContainer");
+//add the routes here
+router.addRoute(new Route("route1",'route1.html'));
+router.addRoute(new Route("route2",'route2.html'));
+router.addRoute(new Route("route3",'route3.html'));
+router.addRoute(new Route("route4"));
+</script>
+</head>
+<body>
+	<ul>
+		<li><a href="#route1">Go to route1</a></li>
+		<li><a href="#route2">Go to route2</a></li>
+		<li><a href="#route3">Go to route3</a></li>
+		<li><a href="#route4">Go to route4</a></li>
+	</ul>
+    <!--Container within which router renders the template -->
+    <div id="tplContainer">
+    </div>
+</body>
+</html>
