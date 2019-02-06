@@ -44,23 +44,26 @@ router._findRoute = function(currentUrl) {
 };
 
 /**
- * Routes control to the relevant callback function
- * depending on the route determined
+ * Renders the html template based on route detected
  */
 router.route = function() {
-    var requestedRouteUrl = window.location.href.split("#")[1];
-    //retrieve the stored route object corresponding to URL
-    var requestedRouteObj = this._findRoute(requestedRouteUrl);
-    var tpl = "";
-    if (requestedRouteObj) {
-        //retrieve the tpl
-        tpl = this._retrieveTpl(requestedRouteObj.tplUrl);
-    } else {
-        tpl = "Requested route not added to list of routes";
-        console.warn("Route not found");
+    var url = window.location.href;
+    var isValidRouteUrl = this._isValidRouteUrl(url);
+    if (isValidRouteUrl) {
+        //get the url fragment having route details
+        var requestedRouteUrl = url.split("#")[1];
+        //retrieve the stored route object corresponding to URL
+        var requestedRouteObj = this._findRoute(requestedRouteUrl);
+        var tpl = "";
+        if (requestedRouteObj) {
+            //retrieve the tpl
+            tpl = this._retrieveTpl(requestedRouteObj.tplUrl);
+        } else {
+            console.warn("Route not found");
+        }
+        // replace the view with tpl contents
+        document.getElementById(this.tplDomContainerId).innerHTML = tpl;
     }
-    // replace the view with tpl contents
-    document.getElementById(this.tplDomContainerId).innerHTML = tpl;
 };
 
 router.addRoute = function(route) {
@@ -98,6 +101,14 @@ router._retrieveTplFromServer = function(tplUrl) {
     return tpl;
 };
 
+router._isValidRouteUrl = function(url) {
+    var result = false;
+    if (/^[^#]+\#[^#]+$/.exec(url)) {
+        result = true;
+    }
+    return result;
+};
+
 router.flushTplAndRoutes = function() {
     this.routes = [];
     this.tplCache = {};
@@ -106,9 +117,12 @@ router.flushTplAndRoutes = function() {
 /**
  * Note : This has to be placed after router.route is defined
  * 
- * This wires the the {router.route} method to HashChange event
- * Whenever # changes in URL, this event is fired, which in turn 
- * fires the route method to compute route and transfer control
+ * This wires the the {router.route} method to HashChange event and
+ * domContentLoaded event
+ *
+ * Whenever # changes in URL OR a browser bookmarked routed URL is hit
+ * route method is fired to compute route and transfer control
  * accordingly
  */
 window.addEventListener("hashchange", router.route.bind(router), false);
+document.addEventListener("DOMContentLoaded", router.route.bind(router), false);
